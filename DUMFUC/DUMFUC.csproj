@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <LangVersion>preview</LangVersion>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <DebugSymbols>true</DebugSymbols>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Reference Include="BepInEx.Core">
+      </Reference>
+      <Reference Include="BepInEx.Unity.IL2CPP">
+      </Reference>
+      <Reference Include="Il2CppInterop.Common">
+      </Reference>
+      <Reference Include="Il2CppInterop.Runtime">
+      </Reference>
+      <Reference Include="Il2Cppmscorlib">
+      </Reference>
+      <Reference Include="UnityEngine.CoreModule">
+      </Reference>
+      <Reference Include="UnityEngine.XRModule">
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+    </ItemGroup>
+
+</Project>

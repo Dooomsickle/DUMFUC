@@ -1,0 +1,32 @@
+using DUMFUC.Input.Enums;
+using DUMFUC.Utils;
+using UnityEngine;
+using UnityEngine.XR;
+using Logger = BepInEx.Logging.Logger;
+
+namespace DUMFUC.Input.Sources;
+
+/// <summary>
+/// Represents any digital input source from a VR controller (e.g., button press).
+/// </summary>
+public sealed class VrDigitalInputSource : AVrInputSource
+{
+    private readonly InputFeatureUsage<bool> _featureUsage;
+    
+    public override EInputType InputType => EInputType.Digital;
+    public override EInputDevice Device => EInputDevice.XrController;
+    
+    public VrDigitalInputSource(EVrInputType button, EVrHand hand) : base(button, hand)
+    {
+        var feature = Action.GetDigitalFeatureUsage();
+        if (feature == null)
+            throw new ArgumentException($"Input type {button} is not a digital feature usage.");
+        
+        _featureUsage = feature;
+    }
+
+    public override bool GetBool() => InputDevices.TryGetFeatureValue_bool(InputDevice.deviceId, _featureUsage.name, out var value) && value;
+
+    public override float GetFloat() => GetBool() ? 1f : 0f;
+    public override Vector2 GetVector2() => Vector2.zero;
+}
