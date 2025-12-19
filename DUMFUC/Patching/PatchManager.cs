@@ -1,4 +1,5 @@
 using System.Reflection;
+using DUMFUC.Utils;
 using HarmonyLib;
 
 namespace DUMFUC.Patching;
@@ -25,8 +26,27 @@ public static class PatchManager
         {
             if (_donePatches.Contains(patch)) continue;
             
+            // harmony will fail to patch if the patch method has extra parameters
+            var badParams = patch.GetInvalidParameters();
+            if (badParams.Any())
+            {
+                _errors.Add((patch, new ArgumentException($"Invalid parameters: {string.Join(", ", badParams)}")));
+                errors++;
+                continue;
+            }
+
+            // prefix can only return void or bool, postfix can only return void
+            if ((!patch.Pfx?.method.HasValidPrefixReturnType() ?? false) ||
+                (!patch.Pst?.method.HasValidPostfixReturnType() ?? false))
+            {
+                _errors.Add((patch, new ArgumentException("Prefix or postfix return type is invalid.")));
+                errors++;
+                continue;
+            }
+            
             try
             {
+                
                 patch.Apply(_harmonyInstance);
                 _donePatches.Add(patch);
             }
@@ -57,18 +77,17 @@ public static class PatchManager
     {
         var assemblies = asm != null
             ? new[] { asm }
-            : AppDomain.CurrentDomain.GetAssemblies().Where(a => a.Location.Contains("plugins"));
+            : AppDomain.CurrentDomain.GetAssemblies().Where(a => a.Location.Contains("BepInEx") && a.Location.Contains("plugins"));
 
         var patches = new List<PatchDefinition>();
         
         foreach (var assembly in assemblies)
         {
-            var types = assembly.GetTypes().Where(t => typeof(APatchModule).IsAssignableFrom(t));
+            var types = assembly.GetTypes().Where(t => typeof(PatchModule).IsAssignableFrom(t));
 
-            var patchDefs = assembly.GetTypes()
-                .Where(t => typeof(APatchModule).IsAssignableFrom(t) && !t.IsAbstract)
+            var patchDefs = types
                 .Select(Activator.CreateInstance)
-                .OfType<APatchModule>()
+                .OfType<PatchModule>()
                 .SelectMany(p => p.Define())
                 .ToList();
             

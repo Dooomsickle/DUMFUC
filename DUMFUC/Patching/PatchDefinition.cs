@@ -1,3 +1,5 @@
+using System.Reflection;
+using DUMFUC.Utils;
 using HarmonyLib;
 
 namespace DUMFUC.Patching;
@@ -8,9 +10,9 @@ namespace DUMFUC.Patching;
 public sealed class PatchDefinition
 {
     /// <summary>
-    /// The method to patch.
+    /// The methods to patch.
     /// </summary>
-    public Delegate Target { get; }
+    public List<MethodInfo> Targets { get; }
     
     /// <summary>
     /// The method that will run before the target when patched.
@@ -22,7 +24,7 @@ public sealed class PatchDefinition
     /// </summary>
     public HarmonyMethod? Pst { get; set; }
     
-    public PatchDefinition(Delegate target) => Target = target;
+    public PatchDefinition(List<MethodInfo> targets) => Targets = targets;
 
     /// <summary>
     /// Assigns a prefix (runs before) method to the target.
@@ -32,7 +34,7 @@ public sealed class PatchDefinition
     /// <exception cref="ArgumentException">if the prefix method does not return void or bool.</exception>
     public PatchDefinition Prefix(Delegate method)
     {
-        if (method.Method.ReturnType != typeof(void) || method.Method.ReturnType != typeof(bool))
+        if (method.Method.ReturnType != typeof(void) && method.Method.ReturnType != typeof(bool))
             throw new ArgumentException("Prefix method must return void or bool.");
         
         Pfx = new HarmonyMethod(method.Method);
@@ -63,6 +65,33 @@ public sealed class PatchDefinition
         if (Pfx == null && Pst == null)
             throw new ArgumentException("Empty patch.");
         
-        to.Patch(Target.Method, Pfx, Pst);
+        if (Targets.Count == 0) 
+            throw new ArgumentException("No targets.");
+        
+        foreach (var target in Targets)
+            to.Patch(target, Pfx, Pst);
+    }
+
+    /// <summary>
+    /// Finds any problematic parameters in the prefix or postfix method that would cause an error when applied.
+    /// </summary>
+    /// <returns>A list containing the erroneous parameter names, or an empty one if none.</returns>
+    public List<string> GetInvalidParameters()
+    {
+        if (Targets.Count == 0) return new List<string>();
+        if (Pfx == null && Pst == null) return new List<string>();
+        
+        var targetParamNames = Targets[0].GetParameters()
+            .Select(p => p.Name ?? "")
+            .ToHashSet();
+
+        return new[] { Pfx?.method, Pst?.method }
+            .Where(m => m != null)
+            .SelectMany(m => m!.GetParameters())
+            .Select(p => p.Name ?? "")
+            // if a parameter name isn't in the target, check if it's supposed to be injected
+            .Where(name => !targetParamNames.Contains(name) && !HarmonyUtilities.IsParameterValidHarmony(name))
+            .Distinct()
+            .ToList();
     }
 }

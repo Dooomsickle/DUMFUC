@@ -1,8 +1,9 @@
 using BepInEx;
+using BepInEx.Logging;
 using BepInEx.Unity.IL2CPP;
-using DUMFUC.Input;
-using DUMFUC.Tests;
-using UnityEngine.XR;
+using DUMFUC.Patching;
+using UnityEngine.Assertions;
+using UnityEngine.Playables;
 
 namespace DUMFUC;
 
@@ -11,7 +12,20 @@ public class Plugin : BasePlugin
 {
     public override void Load()
     {
-        AddComponent<InputSystem>();
-        InputDevices.deviceConnected += new Action<InputDevice>(_ => InputSystemTests.Run());
+        PatchManager.ApplyPatches(typeof(Plugin).Assembly);
+        
+        var logger = Logger.CreateLogSource("Plugin");
+        logger.LogInfo("Testing!");
+    }
+}
+
+public class TestPatch : PatchModule
+{
+    private static void MyPatch(ref object __0) => __0 = "Patched!";
+    
+    public override IEnumerable<PatchDefinition> Define()
+    {
+        yield return Target(Ref<ManualLogSource>.MethodsNamed("LogInfo"))
+            .Prefix(MyPatch);
     }
 }
