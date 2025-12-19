@@ -4,5 +4,6 @@ public enum EInputDevice
 {
     XrController,
     Keyboard,
-    Mouse
+    Mouse,
+    Peripheral
 }
