@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace DUMFUC.Utils;
 
+/// <summary>
+/// Allows easy running of custom coroutines.
+/// </summary>
 public class CoroutineRunner : MonoBehaviour
 {
     static CoroutineRunner() => ClassInjector.RegisterTypeInIl2Cpp<CoroutineRunner>();
