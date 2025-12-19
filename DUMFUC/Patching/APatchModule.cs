@@ -1,5 +1,3 @@
-using DUMFUC.Tests;
-
 namespace DUMFUC.Patching;
 
 /// <summary>
@@ -7,16 +5,12 @@ namespace DUMFUC.Patching;
 /// </summary>
 public abstract class APatchModule
 {
+    /// <summary>
+    /// Defines a patch target.
+    /// </summary>
+    /// <param name="method">The method to target.</param>
+    /// <returns>A new patch definition describing the target.</returns>
     protected static PatchDefinition Target(Delegate method) => new(method);
 
     public abstract IEnumerable<PatchDefinition> Define();
-}
-
-public class Test : APatchModule
-{
-    public override IEnumerable<PatchDefinition> Define()
-    {
-        yield return Target(InputSystemTests.Run)
-            .Prefix(Define);
-    }
 }
