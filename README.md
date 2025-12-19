@@ -9,7 +9,9 @@ I tried to make the features as generic as possible, but a lot of them are speci
 ### Input
 Allows you to easily define input actions with configurable bindings that persist through sessions.
 Input can come from a variety of sources, and the API can be extended to support more.
+[Examples](./Examples/input.md)
 
 ### Patching
 A wrapper around Harmony that makes patching much cleaner, safer, and less "string-based". 
 I specifically use this to avoid having to keep my patch classes unobfuscated.
+[Examples](./Examples/patching.md)
