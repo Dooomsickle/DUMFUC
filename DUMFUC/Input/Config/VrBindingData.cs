@@ -5,6 +5,6 @@ namespace DUMFUC.Input.Config;
 [Serializable]
 public class VrBindingData
 {
-    public EVrHand hand;
-    public EVrInputType button;
+    public VrHand hand;
+    public VrInputType button;
 }

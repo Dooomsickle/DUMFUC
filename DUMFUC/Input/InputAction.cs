@@ -8,7 +8,7 @@ namespace DUMFUC.Input;
 /// </summary>
 public class InputAction
 {
-     private readonly AInputSource _source;
+     private readonly InputSource _source;
      private InteractionState _state;
      
      /// <summary>
@@ -36,7 +36,7 @@ public class InputAction
      /// </summary>
      public bool Enabled { get; set; } = true;
      
-     public InputAction(AInputSource source, IInputInteraction interaction)
+     public InputAction(InputSource source, IInputInteraction interaction)
      {
           _source = source;
           Interaction = interaction;
@@ -64,13 +64,13 @@ public class InputAction
           
           switch (phase)
           {
-               case EActionPhase.Started:
+               case ActionPhase.Started:
                     Started.Invoke(snapshot);
                     break;
-               case EActionPhase.Performed:
+               case ActionPhase.Performed:
                     Performed.Invoke(snapshot);
                     break;
-               case EActionPhase.Canceled:
+               case ActionPhase.Canceled:
                     Canceled.Invoke(snapshot);
                     break;
                default:

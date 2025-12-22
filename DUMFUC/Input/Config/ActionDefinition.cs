@@ -8,8 +8,8 @@ public class ActionDefinition
 {
     public string name = "Unnamed Action";
     
-    public EInputType inputType_DONOTCHANGE;
-    public EInputDevice inputDevice;
+    public InputType inputType_DONOTCHANGE;
+    public DeviceType deviceType;
     
     public InteractionDefinition interaction = null!;
     

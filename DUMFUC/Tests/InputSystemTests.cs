@@ -11,7 +11,7 @@ public static class InputSystemTests
     
     public static void Run()
     {
-        var action = new InputAction(new Vr2dInputSource(EVrInputType.ThumbstickAxis2D, EVrHand.Right),
+        var action = new InputAction(new Vr2dInputSource(VrInputType.ThumbstickAxis2D, VrHand.Right),
             IInputInteraction.DefaultContinuous());
         
         InputSystem.Initialize();

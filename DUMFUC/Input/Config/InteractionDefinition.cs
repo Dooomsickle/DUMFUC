@@ -5,7 +5,7 @@ namespace DUMFUC.Input.Config;
 [Serializable]
 public class InteractionDefinition
 {
-    public EInteractionType interactionType;
+    public InteractionType interactionType;
 
     // Hold interaction data
     public float deadzone;

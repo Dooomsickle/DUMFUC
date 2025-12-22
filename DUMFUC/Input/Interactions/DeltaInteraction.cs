@@ -10,13 +10,13 @@ public sealed class DeltaInteraction : IInputInteraction
 {
     private object? _previousValue = null;
 
-    public bool Supports(EInputType type) => true;
+    public bool Supports(InputType type) => true;
 
     public bool Tick(
         InputSnapshot snapshot,
         float time,
         ref InteractionState state,
-        out EActionPhase phase
+        out ActionPhase phase
     )
     {
         phase = default;
@@ -27,7 +27,7 @@ public sealed class DeltaInteraction : IInputInteraction
         if (state.active && !snapshot.BoolValue) // released
         {
             state.active = false;
-            phase = EActionPhase.Canceled;
+            phase = ActionPhase.Canceled;
             _previousValue = null;
             return true;
         }
@@ -35,12 +35,12 @@ public sealed class DeltaInteraction : IInputInteraction
         if (snapshot.BoolValue && _previousValue is null)
         {
             state.active = true;
-            phase = EActionPhase.Started;
+            phase = ActionPhase.Started;
             _previousValue = snapshot.Type switch
             {
-                EInputType.Digital => snapshot.BoolValue,
-                EInputType.Axis1D => snapshot.FloatValue,
-                EInputType.Axis2D => snapshot.Vector2Value,
+                InputType.Digital => snapshot.BoolValue,
+                InputType.Axis1D => snapshot.FloatValue,
+                InputType.Axis2D => snapshot.Vector2Value,
                 _ => null
             };
             return true;
@@ -52,14 +52,14 @@ public sealed class DeltaInteraction : IInputInteraction
         {
             _previousValue = snapshot.Type switch
             {
-                EInputType.Digital => snapshot.BoolValue,
-                EInputType.Axis1D => snapshot.FloatValue,
-                EInputType.Axis2D => snapshot.Vector2Value,
+                InputType.Digital => snapshot.BoolValue,
+                InputType.Axis1D => snapshot.FloatValue,
+                InputType.Axis2D => snapshot.Vector2Value,
                 _ => null
             };
 
             state.active = true;
-            phase = EActionPhase.Performed;
+            phase = ActionPhase.Performed;
             return true;
         }
 
@@ -73,13 +73,13 @@ public sealed class DeltaInteraction : IInputInteraction
         
         switch (snapshot.Type)
         {
-            case EInputType.Digital:
+            case InputType.Digital:
                 var val = snapshot.BoolValue;
                 return val == (bool)_previousValue;
-            case EInputType.Axis1D:
+            case InputType.Axis1D:
                 var fval = snapshot.FloatValue;
                 return Mathf.Approximately(fval, (float)_previousValue);
-            case EInputType.Axis2D:
+            case InputType.Axis2D:
                 var v2val = snapshot.Vector2Value;
                 return v2val == (Vector2)_previousValue;
         }

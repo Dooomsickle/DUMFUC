@@ -1,6 +1,6 @@
 namespace DUMFUC.Input.Enums;
 
-public enum EInputDevice
+public enum DeviceType
 {
     XrController,
     Keyboard,

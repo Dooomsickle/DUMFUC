@@ -8,15 +8,15 @@ namespace DUMFUC.Input.Sources;
 /// <summary>
 /// Represents a VR analog input source (e.g., trigger or grip).
 /// </summary>
-public sealed class VrAnalogInputSource : AVrInputSource
+public sealed class VrAnalogInputSource : VrInputSource
 {
     private readonly InputFeatureUsage<float> _featureUsage;
     
-    public override EInputType InputType => EInputType.Axis1D;
+    public override InputType InputType => InputType.Axis1D;
     
     public float Deadzone { get; set; } = 0f;
 
-    public VrAnalogInputSource(EVrInputType axis, EVrHand hand) : base(axis, hand)
+    public VrAnalogInputSource(VrInputType axis, VrHand hand) : base(axis, hand)
     {
         var feature = axis.GetAnalogFeatureUsage();
         if (feature == null)

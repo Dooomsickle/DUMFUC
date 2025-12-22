@@ -1,6 +1,6 @@
 namespace DUMFUC.Input.Enums;
 
-public enum EVrInputType
+public enum VrInputType
 {
     PrimaryButton,
     SecondaryButton,

@@ -8,13 +8,13 @@ namespace DUMFUC.Input.Sources;
 /// <summary>
 /// Represents a VR 2D axis input source (e.g. thumbstick).
 /// </summary>
-public sealed class Vr2dInputSource : AVrInputSource
+public sealed class Vr2dInputSource : VrInputSource
 {
     private readonly InputFeatureUsage<Vector2> _featureUsage;
     
-    public override EInputType InputType => EInputType.Axis2D;
+    public override InputType InputType => InputType.Axis2D;
     
-    public Vr2dInputSource(EVrInputType axis, EVrHand hand) : base(axis, hand)
+    public Vr2dInputSource(VrInputType axis, VrHand hand) : base(axis, hand)
     {
         var feature = axis.GetAxis2DFeatureUsage();
         if (feature == null)

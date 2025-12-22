@@ -8,7 +8,7 @@ namespace DUMFUC.Input;
 /// </summary>
 public struct InputSnapshot
 {
-    public EInputType Type;
+    public InputType Type;
     public bool BoolValue;
     public float FloatValue;
     public Vector2 Vector2Value;

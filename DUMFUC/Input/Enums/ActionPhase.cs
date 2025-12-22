@@ -8,7 +8,7 @@ namespace DUMFUC.Input.Enums;
 /// <item>Canceled - The action has been stopped.</item>
 /// </list>
 /// </summary>
-public enum EActionPhase
+public enum ActionPhase
 {
     Started,
     Performed,

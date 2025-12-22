@@ -1,6 +1,6 @@
 namespace DUMFUC.Input.Enums;
 
-public enum EVrHand
+public enum VrHand
 {
     Left,
     Right

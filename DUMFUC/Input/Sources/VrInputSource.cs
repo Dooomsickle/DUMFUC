@@ -8,22 +8,22 @@ namespace DUMFUC.Input.Sources;
 /// <summary>
 /// A base class for inputs on VR controllers.
 /// </summary>
-public abstract class AVrInputSource : AInputSource
+public abstract class VrInputSource : InputSource
 {
     protected InputDevice InputDevice;
-    public override EInputDevice Device => EInputDevice.XrController;
+    public override DeviceType DeviceType => DeviceType.XrController;
     
     /// <summary>
     /// The associated controller button or axis.
     /// </summary>
-    public EVrInputType Action { get; set; }
+    public VrInputType Action { get; set; }
     
     /// <summary>
     /// The target hand.
     /// </summary>
-    public EVrHand Hand { get; set; }
+    public VrHand Hand { get; set; }
     
-    protected AVrInputSource(EVrInputType action, EVrHand hand)
+    protected VrInputSource(VrInputType action, VrHand hand)
     {
         Action = action;
         Hand = hand;

@@ -1,22 +1,23 @@
 using DUMFUC.Input.Enums;
 using UnityEngine;
+using DeviceType = DUMFUC.Input.Enums.DeviceType;
 
 namespace DUMFUC.Input;
 
 /// <summary>
 /// Base class for input sources such as keyboard, mouse, or XR controllers.
 /// </summary>
-public abstract class AInputSource
+public abstract class InputSource
 {
     /// <summary>
     /// The type of data this input source provides.
     /// </summary>
-    public abstract EInputType InputType { get; }
+    public abstract InputType InputType { get; }
     
     /// <summary>
     /// The device this input source is associated with.
     /// </summary>
-    public abstract EInputDevice Device { get; }
+    public abstract DeviceType DeviceType { get; }
 
     /// <summary>
     /// Gets the boolean value of the input source. This can vary based on the input type:

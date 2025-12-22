@@ -1,13 +1,14 @@
 using DUMFUC.Input.Enums;
 using UnityEngine;
+using DeviceType = DUMFUC.Input.Enums.DeviceType;
 using KeyCode = BepInEx.Unity.IL2CPP.UnityEngine.KeyCode;
 
 namespace DUMFUC.Input.Sources;
 
-public class KeyInputSource : AInputSource
+public class KeyInputSource : InputSource
 {
-    public override EInputDevice Device => EInputDevice.Keyboard;
-    public override EInputType InputType => EInputType.Digital;
+    public override DeviceType DeviceType => DeviceType.Keyboard;
+    public override InputType InputType => InputType.Digital;
     
     public KeyCode Key { get; set; }
     

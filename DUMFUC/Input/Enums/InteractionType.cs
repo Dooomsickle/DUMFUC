@@ -1,6 +1,6 @@
 namespace DUMFUC.Input.Enums;
 
-public enum EInteractionType
+public enum InteractionType
 {
     Hold,
     Delta

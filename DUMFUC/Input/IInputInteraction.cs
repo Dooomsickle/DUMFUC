@@ -13,7 +13,7 @@ public interface IInputInteraction
     /// </summary>
     /// <param name="type">The type of input.</param>
     /// <returns><c>true</c> if supported, <c>false</c> otherwise.</returns>
-    public bool Supports(EInputType type);
+    public bool Supports(InputType type);
 
     /// <summary>
     /// The clock of the interaction.
@@ -27,7 +27,7 @@ public interface IInputInteraction
         InputSnapshot snapshot,
         float time,
         ref InteractionState state,
-        out EActionPhase phase
+        out ActionPhase phase
     );
 
     /// <summary>

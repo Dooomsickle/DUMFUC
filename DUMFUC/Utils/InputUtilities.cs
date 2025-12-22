@@ -7,99 +7,99 @@ namespace DUMFUC.Utils;
 
 public static class InputUtilities
 {
-    public static bool IsDigital(this EVrInputType vrInputType)
+    public static bool IsDigital(this VrInputType vrInputType)
     {
         return vrInputType switch
         {
-            EVrInputType.PrimaryButton or EVrInputType.SecondaryButton or EVrInputType.GripButton
-                or EVrInputType.TriggerButton or EVrInputType.ThumbstickButton => true,
+            VrInputType.PrimaryButton or VrInputType.SecondaryButton or VrInputType.GripButton
+                or VrInputType.TriggerButton or VrInputType.ThumbstickButton => true,
             _ => false
         };
     }
 
-    public static bool IsAnalog(this EVrInputType vrInputType)
+    public static bool IsAnalog(this VrInputType vrInputType)
     {
         return vrInputType switch
         {
-            EVrInputType.TriggerAxis or EVrInputType.GripAxis => true,
+            VrInputType.TriggerAxis or VrInputType.GripAxis => true,
             _ => false
         };
     }
     
-    public static bool IsAxis2D(this EVrInputType vrInputType)
+    public static bool IsAxis2D(this VrInputType vrInputType)
     {
         return vrInputType switch
         {
-            EVrInputType.ThumbstickAxis2D => true,
+            VrInputType.ThumbstickAxis2D => true,
             _ => false
         };
     }
     
-    public static InputFeatureUsage<bool>? GetDigitalFeatureUsage(this EVrInputType vrInputType)
+    public static InputFeatureUsage<bool>? GetDigitalFeatureUsage(this VrInputType vrInputType)
     {
         if (!vrInputType.IsDigital()) return null;
         
         return vrInputType switch
         {
-            EVrInputType.PrimaryButton => CommonUsages.primaryButton,
-            EVrInputType.SecondaryButton => CommonUsages.secondaryButton,
-            EVrInputType.GripButton => CommonUsages.gripButton,
-            EVrInputType.TriggerButton => CommonUsages.triggerButton,
-            EVrInputType.ThumbstickButton => CommonUsages.primary2DAxisClick,
+            VrInputType.PrimaryButton => CommonUsages.primaryButton,
+            VrInputType.SecondaryButton => CommonUsages.secondaryButton,
+            VrInputType.GripButton => CommonUsages.gripButton,
+            VrInputType.TriggerButton => CommonUsages.triggerButton,
+            VrInputType.ThumbstickButton => CommonUsages.primary2DAxisClick,
             _ => null
         };
     }
     
-    public static InputFeatureUsage<float>? GetAnalogFeatureUsage(this EVrInputType vrInputType)
+    public static InputFeatureUsage<float>? GetAnalogFeatureUsage(this VrInputType vrInputType)
     {
         if (!vrInputType.IsAnalog()) return null;
         
         return vrInputType switch
         {
-            EVrInputType.TriggerAxis => CommonUsages.trigger,
-            EVrInputType.GripAxis => CommonUsages.grip,
+            VrInputType.TriggerAxis => CommonUsages.trigger,
+            VrInputType.GripAxis => CommonUsages.grip,
             _ => null
         };
     }
     
-    public static InputFeatureUsage<Vector2>? GetAxis2DFeatureUsage(this EVrInputType vrInputType)
+    public static InputFeatureUsage<Vector2>? GetAxis2DFeatureUsage(this VrInputType vrInputType)
     {
         if (!vrInputType.IsAxis2D()) return null;
         
         return vrInputType switch
         {
-            EVrInputType.ThumbstickAxis2D => CommonUsages.primary2DAxis,
+            VrInputType.ThumbstickAxis2D => CommonUsages.primary2DAxis,
             _ => null
         };
     }
     
-    public static XRNode ToXRNode(this EVrHand hand) => hand switch
+    public static XRNode ToXRNode(this VrHand hand) => hand switch
     {
-        EVrHand.Left => XRNode.LeftHand,
-        EVrHand.Right => XRNode.RightHand,
+        VrHand.Left => XRNode.LeftHand,
+        VrHand.Right => XRNode.RightHand,
         _ => throw new ArgumentOutOfRangeException(nameof(hand), hand, null)
     };
 
-    public static EInputType GetInputType(this EVrInputType vrButton) => vrButton switch
+    public static InputType GetInputType(this VrInputType vrButton) => vrButton switch
     {
-        EVrInputType.PrimaryButton or EVrInputType.SecondaryButton or EVrInputType.GripButton
-            or EVrInputType.TriggerButton
-            or EVrInputType.ThumbstickButton => EInputType.Digital,
-        EVrInputType.TriggerAxis or EVrInputType.GripAxis => EInputType.Axis1D,
-        EVrInputType.ThumbstickAxis2D => EInputType.Axis2D,
+        VrInputType.PrimaryButton or VrInputType.SecondaryButton or VrInputType.GripButton
+            or VrInputType.TriggerButton
+            or VrInputType.ThumbstickButton => InputType.Digital,
+        VrInputType.TriggerAxis or VrInputType.GripAxis => InputType.Axis1D,
+        VrInputType.ThumbstickAxis2D => InputType.Axis2D,
         _ => throw new ArgumentOutOfRangeException(nameof(vrButton), vrButton, null)
     };
     
-    public static EInputType GetInputType(this KeyCode key) => EInputType.Digital;
+    public static InputType GetInputType(this KeyCode key) => InputType.Digital;
 
-    public static bool IsInputTypeCompatible(EInputType given, EInputType expected)
+    public static bool IsInputTypeCompatible(InputType given, InputType expected)
     {
         // all binding types give a boolean value
-        if (given == expected || expected == EInputType.Digital)
+        if (given == expected || expected == InputType.Digital)
             return true;
 
         // digital values return a float of 0 or 1
-        if (expected == EInputType.Axis1D && given == EInputType.Digital)
+        if (expected == InputType.Axis1D && given == InputType.Digital)
             return true;
         
         return false;

@@ -18,13 +18,13 @@ public sealed class HoldInteraction : IInputInteraction
         _continuous = continuous;
     }
 
-    public bool Supports(EInputType type) => true;
+    public bool Supports(InputType type) => true;
 
     public bool Tick(
         InputSnapshot snapshot,
         float time,
         ref InteractionState state,
-        out EActionPhase phase
+        out ActionPhase phase
     )
     {
         phase = default;
@@ -33,13 +33,13 @@ public sealed class HoldInteraction : IInputInteraction
         {
             state.active = true;
             state.startTime = time;
-            phase = EActionPhase.Started;
+            phase = ActionPhase.Started;
             return true;
         }
         
         if (!_performed && snapshot.BoolValue && state.active && time - state.startTime >= _holdTime)
         {
-            phase = EActionPhase.Performed;
+            phase = ActionPhase.Performed;
             if (!_continuous)
                 _performed = true;
             return true;
@@ -47,7 +47,7 @@ public sealed class HoldInteraction : IInputInteraction
         
         if (!snapshot.BoolValue && state.active)
         {
-            phase = EActionPhase.Canceled;
+            phase = ActionPhase.Canceled;
             state.active = false;
             _performed = false;
             return true;

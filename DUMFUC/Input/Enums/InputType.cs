@@ -1,6 +1,6 @@
 namespace DUMFUC.Input.Enums;
 
-public enum EInputType
+public enum InputType
 {
     Digital,
     Axis1D,
